@@ -1,0 +1,4 @@
+# 1
+Tried to keep the schema minimal one department table and one employee table 
+Skipping the auth to focus on main Task
+Created schema using https://dbdiagram.io/
