@@ -21,3 +21,5 @@ Used Tanstack for better performance
 Following TDD Approach
 Added new test cases related to chart rendering and analytics query
 
+#5
+Actually making the test cases work

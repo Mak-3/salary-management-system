@@ -2,6 +2,7 @@ import { Building2, Globe2, UserCheck, Users } from "lucide-react";
 
 import { KpiCard } from "@/components/dashboard/kpi-card";
 import { EmployeesTable } from "@/components/dashboard/employees-table";
+import { AppNav } from "@/components/layout/app-nav";
 import { getDashboardStats } from "@/lib/employees/queries";
 
 export const dynamic = "force-dynamic";
@@ -25,6 +26,8 @@ export default async function DashboardPage() {
           </p>
         </div>
       </header>
+
+      <AppNav active="/" />
 
       <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <KpiCard
