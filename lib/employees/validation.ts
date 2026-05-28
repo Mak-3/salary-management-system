@@ -24,7 +24,7 @@ type ParseResult =
   | { ok: false; error: string };
 
 export function parseEmployeePayload(body: unknown): ParseResult {
-  if (!body || typeof body !== "object") {
+  if (!body || typeof body !== "object" || Array.isArray(body)) {
     return { ok: false, error: "Invalid request body" };
   }
 
