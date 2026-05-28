@@ -16,3 +16,8 @@ Random ness logic:
 Added crud functionality
 Implemented Server side pagination with default as 20 items per page 
 Used Tanstack for better performance
+
+#4
+Following TDD Approach
+Added new test cases related to chart rendering and analytics query
+
