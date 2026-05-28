@@ -1,65 +1,81 @@
-import Image from "next/image";
+import { Building2, Globe2, UserCheck, Users } from "lucide-react";
 
-export default function Home() {
+import { KpiCard } from "@/components/dashboard/kpi-card";
+import { EmployeesTable } from "@/components/dashboard/employees-table";
+import { getDashboardStats } from "@/lib/employees/queries";
+
+export const dynamic = "force-dynamic";
+
+export default async function DashboardPage() {
+  const stats = await getDashboardStats();
+  const numberFormatter = new Intl.NumberFormat("en-US");
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <main className="mx-auto w-full max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+      <header className="mb-8 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <p className="text-xs font-medium uppercase tracking-widest text-muted-foreground">
+            Salary Management
+          </p>
+          <h1 className="mt-1 font-heading text-3xl font-semibold tracking-tight">
+            Dashboard
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p className="mt-1 text-sm text-muted-foreground">
+            Global overview of your workforce across departments and regions.
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </header>
+
+      <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <KpiCard
+          label="Total employees"
+          value={numberFormatter.format(stats.totalEmployees)}
+          hint="All records in database"
+          icon={Users}
+          accent="blue"
+        />
+        <KpiCard
+          label="Active"
+          value={numberFormatter.format(stats.activeEmployees)}
+          hint={`${percentage(stats.activeEmployees, stats.totalEmployees)} of workforce`}
+          icon={UserCheck}
+          accent="emerald"
+        />
+        <KpiCard
+          label="Departments"
+          value={stats.departments}
+          hint="Distinct teams"
+          icon={Building2}
+          accent="violet"
+        />
+        <KpiCard
+          label="Countries"
+          value={stats.countries}
+          hint="Where employees are based"
+          icon={Globe2}
+          accent="amber"
+        />
+      </section>
+
+      <section className="mt-10">
+        <div className="mb-4">
+          <h2 className="font-heading text-xl font-semibold tracking-tight">
+            Employees
+          </h2>
+          <p className="text-sm text-muted-foreground">
+            Add, edit, or delete records. Sort, search, and filter across the dataset.
+          </p>
         </div>
-      </main>
-    </div>
+        <EmployeesTable
+          departmentOptions={stats.departmentOptions}
+          countryOptions={stats.countryOptions}
+        />
+      </section>
+    </main>
   );
+}
+
+function percentage(part: number, total: number): string {
+  if (!total) return "0%";
+  return `${Math.round((part / total) * 100)}%`;
 }

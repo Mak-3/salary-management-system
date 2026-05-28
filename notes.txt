@@ -2,3 +2,17 @@
 Tried to keep the schema minimal one department table and one employee table 
 Skipping the auth to focus on main Task
 Created schema using https://dbdiagram.io/
+
+#2
+Using prisma ORM
+Random ness logic:
+    first-names.txt contains 100 names
+    last-names.txt contains 100 names
+    when multiplied we get 10000 entries
+    now for each entry we apply random country based on that we assign currency then a random job_title and department and based on the salary factor we assign random salaries too
+    I took salary factor based on department and job_title
+    
+#3 
+Added crud functionality
+Implemented Server side pagination with default as 20 items per page 
+Used Tanstack for better performance
